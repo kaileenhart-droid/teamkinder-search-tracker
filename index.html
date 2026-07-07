@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Team Kinder — Searches</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0f1e36;color:#1a1a18;font-size:16px}
+.dash{padding:16px 18px}
+.topbar{display:flex;align-items:center;gap:7px;margin-bottom:11px;flex-wrap:wrap}
+.topbar h1{font-size:17px;font-weight:600;color:#fff;margin-right:auto;letter-spacing:.01em}
+.pill{font-size:12px;padding:3px 10px;border-radius:20px;font-weight:500;border:0.5px solid}
+.p-a{background:rgba(91,191,238,0.15);color:#a8dcf5;border-color:rgba(91,191,238,0.35)}
+.p-o{background:rgba(80,180,80,0.15);color:#8dd9a0;border-color:rgba(80,180,80,0.3)}
+.p-h{background:rgba(255,255,255,0.08);color:#aaa;border-color:rgba(255,255,255,0.15)}
+.p-c{background:rgba(250,199,117,0.15);color:#f0c97a;border-color:rgba(250,199,117,0.35)}
+.p-x{background:rgba(200,60,60,0.15);color:#f09090;border-color:rgba(200,60,60,0.3)}
+.bar{display:flex;gap:6px;margin-bottom:11px;flex-wrap:wrap;align-items:center}
+.bar input,.bar select{font-size:13px;padding:5px 10px;border:1px solid rgba(255,255,255,0.15);border-radius:6px;background:rgba(255,255,255,0.07);color:#e8e8e8;height:30px;outline:none}
+.bar input::placeholder{color:#888}
+.bar input:focus,.bar select:focus{border-color:rgba(91,191,238,0.5)}
+.bar input{width:180px}
+.bar select option{background:#1a2e4a;color:#e8e8e8}
+.bar .btn-add{font-size:13px;padding:5px 12px;border:1px solid rgba(91,191,238,0.4);border-radius:6px;background:rgba(91,191,238,0.1);color:#a8dcf5;cursor:pointer;height:30px;margin-left:auto;font-weight:500}
+.bar .btn-add:hover{background:rgba(91,191,238,0.2)}
+.cols{display:flex;gap:11px;overflow-x:auto;padding-bottom:8px}
+.cols::-webkit-scrollbar{height:5px}
+.cols::-webkit-scrollbar-thumb{background:rgba(91,191,238,0.3);border-radius:3px}
+.col{min-width:295px;max-width:310px;flex-shrink:0;background:#fff;border-radius:10px;padding:11px;display:flex;flex-direction:column;gap:7px;box-shadow:0 2px 12px rgba(0,0,0,0.25)}
+.ch{display:flex;align-items:flex-start;justify-content:space-between}
+.cnr{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.cname{font-size:14px;font-weight:600;color:#0f1e36;cursor:pointer;border:none;background:none;padding:0;font-family:inherit}
+.cname:hover{color:#1a6fa8}
+.ctitle{font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-top:1px}
+.cacts{display:flex;gap:3px}
+.btn-sm{font-size:11px;padding:3px 7px;border:1px solid #ddd;border-radius:5px;background:#f5f5f5;color:#555;cursor:pointer}
+.btn-sm:hover{background:#eee}
+.btn-del{color:#b33;border-color:#f0c0c0;background:#fff5f5}
+.srow{display:grid;grid-template-columns:repeat(4,1fr);gap:3px}
+.sb{background:#f5f7fa;border-radius:5px;padding:3px 4px;text-align:center;border:1px solid #eaedf2}
+.slbl{font-size:9.5px;color:#999;text-transform:uppercase;letter-spacing:.03em}
+.sval{font-size:14px;font-weight:600;color:#1a1a18}
+.sval.ov{color:#b33}
+.sval.wn{color:#a06010}
+.slist{display:flex;flex-direction:column;gap:4px;max-height:400px;overflow-y:auto}
+.slist::-webkit-scrollbar{width:3px}
+.slist::-webkit-scrollbar-thumb{background:#ccc;border-radius:2px}
+.card{border-radius:7px;border:1px solid #e8eaf0;padding:7px 8px}
+.ca{background:#fafbfc}
+.co{background:#EBF4FF;border-color:#aecfe8}
+.ch2{background:#f2f2f2;border-color:#ccc}
+.cc{background:#FEFCE8;border-color:#e8d06a}
+.ct{display:flex;align-items:flex-start;justify-content:space-between;gap:5px}
+.ctit{font-size:12.5px;font-weight:600;color:#1a1a18;flex:1;cursor:pointer;border:none;background:none;padding:0;text-align:left;font-family:inherit;line-height:1.35}
+.ctit:hover{color:#1a6fa8}
+.cage{font-size:10.5px;white-space:nowrap;margin-top:1px}
+.bgs{display:flex;gap:3px;flex-wrap:wrap;margin-top:3px;align-items:center}
+.bg{font-size:10px;padding:2px 6px;border-radius:7px;font-weight:600}
+.bg-l{background:#ddeeff;color:#1a6fa8}
+.bg-s{background:#eeedfe;color:#534AB7}
+.bg-c{font-size:10.5px;color:#888}
+.cf{margin-top:4px;display:flex;align-items:center;justify-content:space-between;gap:4px}
+.cdate{font-size:10.5px;color:#999;white-space:nowrap}
+.cbtns{display:flex;gap:2px;align-items:center}
+.ab{font-size:10px;padding:2px 6px;border:1px solid #ccc;border-radius:4px;background:rgba(255,255,255,0.7);color:#555;cursor:pointer;white-space:nowrap;line-height:1.7}
+.ab:hover{background:#fff}
+.ab.ao{color:#1a6fa8;border-color:#aecfe8;background:#dbeeff;font-weight:600}
+.ab.ah{color:#555;border-color:#aaa;background:#e8e7e2;font-weight:600}
+.ab.ac{color:#7a4a0a;border-color:#e8c84a;background:#fef3c0;font-weight:600}
+.ab-x{font-size:10px;padding:2px 5px;border:1px solid #f0c0c0;border-radius:4px;background:none;color:#b33;cursor:pointer;line-height:1.7}
+.ab-x:hover{background:#fff5f5}
+.add-btn{width:100%;font-size:12px;padding:5px;border:1px dashed #ccc;border-radius:6px;background:none;color:#aaa;cursor:pointer}
+.add-btn:hover{background:#f5f7fa;color:#555}
+.sbadge{font-size:10px;padding:2px 6px;border-radius:7px;font-weight:500}
+.ot{font-size:10px;color:#999;margin-top:2px}
+.mo{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:100}
+.md{background:#fff;border-radius:10px;padding:1rem 1.1rem;min-width:270px;max-width:330px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,0.3)}
+.md h3{font-size:14px;font-weight:600;margin-bottom:.75rem;color:#0f1e36}
+.md label{font-size:12px;color:#666;display:block;margin-bottom:2px;margin-top:7px}
+.md input,.md select{width:100%;font-size:13px;padding:6px 9px;border:1px solid #ccc;border-radius:5px;background:#fafafa;color:#1a1a18;outline:none}
+.md input:focus,.md select:focus{border-color:#5BBFEE}
+.mda{display:flex;gap:6px;margin-top:.8rem;justify-content:flex-end}
+.mda button{font-size:13px;padding:6px 14px;border-radius:5px;cursor:pointer;border:1px solid #ccc;font-weight:500}
+.bn{background:#f5f4f1;color:#555}
+.bn:hover{background:#eee}
+.bs{background:#0f1e36;color:#fff;border-color:#0f1e36}
+.bs:hover{background:#1a2e4a}
+.chk-row{display:flex;gap:9px;margin-top:7px}
+.chk-row label{display:flex;align-items:center;gap:4px;font-size:12px;color:#666;margin:0;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="dash" id="app">
+  <div class="topbar">
+    <h1>Team Kinder — Searches</h1>
+    <span class="pill p-a" id="s-act">0 Active</span>
+    <span class="pill p-o" id="s-off">0 Offer</span>
+    <span class="pill p-h" id="s-hld">0 Hold</span>
+    <span class="pill p-c" id="s-con">0 Coming on</span>
+    <span class="pill p-x" id="s-ovr" style="display:none">0 overloaded</span>
+  </div>
+  <div class="bar">
+    <input type="text" id="sf" placeholder="Search companies, roles, people..."/>
+    <select id="stf">
+      <option value="">All statuses</option>
+      <option>Active</option><option>Offer</option><option>Hold</option><option>Coming on</option>
+    </select>
+    <select id="sof">
+      <option value="age">Sort by age</option>
+      <option value="alpha">Sort A-Z</option>
+    </select>
+    <button class="btn-add" onclick="openAddMember()">+ Add member</button>
+  </div>
+  <div class="cols" id="cols"></div>
+</div>
+<div id="mo" class="mo" style="display:none"></div>
+<script>
+const TT={'Director':'DIRECTOR','Managing Director':'MANAGING DIRECTOR','Partner / President':'PARTNER / PRESIDENT','Senior Associate':'SENIOR ASSOCIATE','Associate':'ASSOCIATE','Senior Consultant':'SENIOR CONSULTANT'};
+const ML=6;
+let S={members:[
+  {id:'laura',name:'Laura',title:'Partner / President',searches:[]},
+  {id:'sam',name:'Sam',title:'Managing Director',searches:[]},
+  {id:'tara',name:'Tara',title:'Managing Director',searches:[]},
+  {id:'carly',name:'Carly',title:'Managing Director',searches:[]},
+  {id:'emma',name:'Emma',title:'Managing Director',searches:[]},
+  {id:'alana',name:'Alana',title:'Managing Director',searches:[]},
+  {id:'kaileen',name:'Kaileen',title:'Director',searches:[]},
+  {id:'mikaela',name:'Mikaela',title:'Senior Associate',searches:[]},
+  {id:'annie',name:'Annie',title:'Senior Consultant',searches:[]},
+  {id:'katie',name:'Katie',title:'Associate',searches:[]},
+]};
+const SD={
+  laura:[
+    {id:'s1',company:'Cloudflare',role:'VP Product, Security',status:'Active',lead:true,solo:false,split:'split w/ Daversa',collab:'Joanna',date:'07/01/2026',age:6},
+    {id:'s2',company:'Conifer/Tenet',role:'CTO',status:'Active',lead:true,solo:false,split:'with Sam, Michaela',collab:'',date:'07/01/2026',age:6},
+    {id:'s3',company:'Oscar',role:'Project Lucie',status:'Active',lead:false,solo:false,split:'with Tara',collab:'',date:'06/18/2026',age:19},
+    {id:'s4',company:'Nourish',role:'COO',status:'Active',lead:true,solo:true,split:'',collab:'',date:'06/10/2026',age:27},
+  ],
+  sam:[
+    {id:'s5',company:'givebutter',role:'',status:'Active',lead:true,solo:true,split:'',collab:'',date:'07/20/2026',age:0},
+    {id:'s6',company:'Conifer/Tenet',role:'CTO',status:'Active',lead:false,solo:false,split:'with Laura, Michaela',collab:'',date:'07/01/2026',age:6},
+    {id:'s7',company:'Nome',role:'CTO',status:'Active',lead:true,solo:false,split:'with Annie',collab:'',date:'06/30/2026',age:7},
+    {id:'s8',company:'Helm',role:'CFO',status:'Active',lead:true,solo:false,split:'with Michaela',collab:'',date:'05/14/2026',age:54},
+  ],
+  tara:[
+    {id:'s9',company:'Cloudflare',role:'VP Event Marketing',status:'Active',lead:true,solo:true,split:'',collab:'',date:'06/18/2026',age:19},
+    {id:'s10',company:'Oscar',role:'Project Lucie',status:'Active',lead:false,solo:false,split:'with Laura',collab:'',date:'06/18/2026',age:19},
+    {id:'s11',company:'ID.me',role:'VP Comms',status:'Active',lead:true,solo:true,split:'',collab:'',date:'06/15/2026',age:22},
+    {id:'s12',company:'Nuvo',role:'Head of Talent',status:'Active',lead:true,solo:true,split:'',collab:'',date:'06/12/2026',age:25},
+  ],
+  kaileen:[
+    {id:'s13',company:'Circle',role:'VP Ecosystem & Community',status:'Active',lead:true,solo:true,split:'',collab:'',date:'04/01/2026',age:97},
+    {id:'s14',company:'Oscar Health',role:'VP Analytics',status:'Active',lead:true,solo:true,split:'',collab:'',date:'03/15/2026',age:114},
+    {id:'s15',company:'People Inc.',role:'SVP Consumer Marketing',status:'Active',lead:true,solo:true,split:'',collab:'',date:'02/01/2026',age:156},
+    {id:'s16',company:'TRM Labs',role:'VP Engineering',status:'Active',lead:true,solo:true,split:'',collab:'',date:'09/01/2025',age:309},
+    {id:'s17',company:'Harmattan AI',role:'Chief Scientist',status:'Active',lead:true,solo:true,split:'',collab:'',date:'05/01/2026',age:67},
+    {id:'s18',company:'Life360',role:'VP Data',status:'Active',lead:true,solo:true,split:'',collab:'',date:'05/15/2026',age:53},
+  ],
+  alana:[{id:'s19',company:'Foresight',role:'CTO',status:'Active',lead:true,solo:true,split:'',collab:'',date:'06/01/2026',age:36}],
+};
+S.members.forEach(m=>{if(SD[m.id])m.searches=SD[m.id];});
+function calcLoad(m){const s=m.searches.filter(s=>s.status==='Active'||s.status==='Offer');return Math.round((s.filter(s=>s.solo).length+s.filter(s=>!s.solo).length*.6)*10)/10;}
+function updateStats(){let a=0,o=0,h=0,c=0,ov=0;S.members.forEach(m=>{m.searches.forEach(s=>{if(s.status==='Active')a++;else if(s.status==='Offer')o++;else if(s.status==='Hold')h++;else if(s.status==='Coming on')c++;});if(calcLoad(m)>ML)ov++;});document.getElementById('s-act').textContent=a+' Active';document.getElementById('s-off').textContent=o+' Offer';document.getElementById('s-hld').textContent=h+' Hold';document.getElementById('s-con').textContent=c+' Coming on';const el=document.getElementById('s-ovr');ov>0?(el.textContent=ov+' overloaded',el.style.display=''):el.style.display='none';}
+function filt(arr){const q=document.getElementById('sf').value||'',st=document.getElementById('stf').value||'',so=document.getElementById('sof').value||'age';let r=arr.filter(s=>{const t=(s.company+' '+s.role+' '+(s.collab||'')+' '+(s.split||'')).toLowerCase();return(!q||t.includes(q.toLowerCase()))&&(!st||s.status===st);});return so==='alpha'?r.sort((a,b)=>a.company.localeCompare(b.company)):r.sort((a,b)=>b.age-a.age);}
+function ac(age){return age>60?'#b33':age>30?'#a06010':'#2d7a3a';}
+function cardCls(s){return s==='Offer'?'co':s==='Hold'?'ch2':s==='Coming on'?'cc':'ca';}
+function renderCard(s,mid){const t=s.role?s.company+' - '+s.role:s.company;return`<div class="card ${cardCls(s.status)}" id="card-${s.id}"><div class="ct"><button class="ctit" onclick="openES('${mid}','${s.id}')">${t}</button><span class="cage" style="color:${ac(s.age)}">${s.age}d</span></div><div class="bgs">${s.lead?'<span class="bg bg-l">LEAD</span>':''}${s.solo?'<span class="bg bg-s">SOLO</span>':''}${s.split?`<span class="bg-c">${s.split}</span>`:''}</div><div class="cf"><span class="cdate">${s.date}</span><div class="cbtns"><button class="ab${s.status==='Offer'?' ao':''}" onclick="tog('${mid}','${s.id}','Offer')">Offer</button><button class="ab${s.status==='Hold'?' ah':''}" onclick="tog('${mid}','${s.id}','Hold')">Hold</button><button class="ab${s.status==='Coming on'?' ac':''}" onclick="tog('${mid}','${s.id}','Coming on')">Coming on</button><button class="ab-x" onclick="ds('${mid}','${s.id}')">x</button></div></div>${s.collab?`<div class="ot">OTHER TEAM: ${s.collab}</div>`:''}</div>`;}
+function renderCol(m){const l=calcLoad(m),open=m.searches.filter(s=>s.status==='Active'||s.status==='Offer').length,off=m.searches.filter(s=>s.status==='Offer').length,solo=m.searches.filter(s=>(s.status==='Active'||s.status==='Offer')&&s.solo).length,isOv=l>ML,room=Math.max(0,ML-Math.ceil(l)),tl=TT[m.title]||m.title.toUpperCase();return`<div class="col" id="col-${m.id}"><div class="ch"><div><div class="cnr"><button class="cname" onclick="openEM('${m.id}')">${m.name}</button>${room>0?`<span class="sbadge" style="background:#eef5fb;color:#1a6fa8;border:0.5px solid #aecfe8">+${room}</span>`:''}${isOv?`<span class="sbadge" style="background:#fff5f5;color:#b33;border:0.5px solid #f0c0c0">over</span>`:''}</div><div class="ctitle">${tl}</div></div><div class="cacts"><button class="btn-sm" onclick="openAS('${m.id}')">+ Add</button><button class="btn-sm btn-del" onclick="dm('${m.id}')">x</button></div></div><div class="srow"><div class="sb"><div class="slbl">Open</div><div class="sval">${open}</div></div><div class="sb"><div class="slbl">Offer</div><div class="sval" style="${off>0?'color:#2d7a3a':''}">${off}</div></div><div class="sb"><div class="slbl">Solo</div><div class="sval">${solo}</div></div><div class="sb"><div class="slbl">Load</div><div class="sval ${isOv?'ov':l>4?'wn':''}">${l.toFixed(1)}</div></div></div><div class="slist">${filt(m.searches).map(s=>renderCard(s,m.id)).join('')}</div><button class="add-btn" onclick="openAS('${m.id}')">+ Add search</button></div>`;}
+function render(){document.getElementById('cols').innerHTML=S.members.map(renderCol).join('');updateStats();}
+function tog(mid,sid,ns){const m=S.members.find(m=>m.id===mid),s=m.searches.find(s=>s.id===sid);if(s)s.status=s.status===ns?'Active':ns;render();}
+function ds(mid,sid){const m=S.members.find(m=>m.id===mid);m.searches=m.searches.filter(s=>s.id!==sid);render();}
+function dm(mid){if(confirm('Remove this team member?')){S.members=S.members.filter(m=>m.id!==mid);render();}}
+function cm(){const el=document.getElementById('mo');el.style.display='none';el.innerHTML='';}
+function om(html){const el=document.getElementById('mo');el.style.display='flex';el.innerHTML=`<div class="md">${html}</div>`;}
+function openAddMember(){om(`<h3>Add team member</h3><label>Name</label><input id="mn" placeholder="First name" autofocus/><label>Title</label><select id="mt"><option>Partner / President</option><option>Managing Director</option><option selected>Director</option><option>Senior Associate</option><option>Senior Consultant</option><option>Associate</option></select><div class="mda"><button class="bn" onclick="cm()">Cancel</button><button class="bs" onclick="savM()">Add</button></div>`);}
+function savM(){const n=document.getElementById('mn').value.trim();if(!n)return;S.members.push({id:n.toLowerCase().replace(/\s+/g,'_')+'_'+Date.now(),name:n,title:document.getElementById('mt').value,searches:[]});cm();render();}
+function openEM(mid){const m=S.members.find(m=>m.id===mid);om(`<h3>Edit member</h3><label>Name</label><input id="mn" value="${m.name}"/><label>Title</label><select id="mt">${['Partner / President','Managing Director','Director','Senior Associate','Senior Consultant','Associate'].map(t=>`<option${t===m.title?' selected':''}>${t}</option>`).join('')}</select><div class="mda"><button class="bn" onclick="cm()">Cancel</button><button class="bs" onclick="updM('${mid}')">Save</button></div>`);}
+function updM(mid){const m=S.members.find(m=>m.id===mid);m.name=document.getElementById('mn').value.trim()||m.name;m.title=document.getElementById('mt').value;cm();render();}
+function openAS(mid){const td=new Date().toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'numeric'});om(`<h3>Add search</h3><label>Company</label><input id="sc" placeholder="e.g. Stripe" autofocus/><label>Role</label><input id="sr" placeholder="e.g. VP Engineering"/><label>Status</label><select id="ss"><option>Active</option><option>Offer</option><option>Hold</option><option>Coming on</option></select><label>Collaborators</label><input id="sl" placeholder="e.g. with Sam"/><label>Start date</label><input id="sd" value="${td}"/><div class="chk-row"><label><input type="checkbox" id="sld" checked/> Lead</label><label><input type="checkbox" id="slo"/> Solo</label></div><div class="mda"><button class="bn" onclick="cm()">Cancel</button><button class="bs" onclick="savS('${mid}')">Add</button></div>`);}
+function savS(mid){const c=document.getElementById('sc').value.trim();if(!c)return;const m=S.members.find(m=>m.id===mid),dv=document.getElementById('sd').value,p=dv.split('/');let age=0;if(p.length===3){const d=new Date(p[2],p[0]-1,p[1]);age=Math.max(0,Math.round((Date.now()-d)/86400000));}m.searches.push({id:'s'+Date.now(),company:c,role:document.getElementById('sr').value.trim(),status:document.getElementById('ss').value,lead:document.getElementById('sld').checked,solo:document.getElementById('slo').checked,split:document.getElementById('sl').value.trim(),collab:'',date:dv,age});cm();render();}
+function openES(mid,sid){const m=S.members.find(m=>m.id===mid),s=m.searches.find(s=>s.id===sid);om(`<h3>Edit search</h3><label>Company</label><input id="sc" value="${s.company}"/><label>Role</label><input id="sr" value="${s.role||''}"/><label>Status</label><select id="ss">${['Active','Offer','Hold','Coming on'].map(st=>`<option${st===s.status?' selected':''}>${st}</option>`).join('')}</select><label>Collaborators</label><input id="sl" value="${s.split||''}"/><label>Start date</label><input id="sd" value="${s.date||''}"/><div class="chk-row"><label><input type="checkbox" id="sld" ${s.lead?'checked':''}/> Lead</label><label><input type="checkbox" id="slo" ${s.solo?'checked':''}/> Solo</label></div><div class="mda"><button class="bn" onclick="cm()">Cancel</button><button class="bs" onclick="updS('${mid}','${sid}')">Save</button></div>`);}
+function updS(mid,sid){const m=S.members.find(m=>m.id===mid),s=m.searches.find(s=>s.id===sid);s.company=document.getElementById('sc').value.trim()||s.company;s.role=document.getElementById('sr').value.trim();s.status=document.getElementById('ss').value;s.split=document.getElementById('sl').value.trim();s.lead=document.getElementById('sld').checked;s.solo=document.getElementById('slo').checked;const dv=document.getElementById('sd').value;s.date=dv;const p=dv.split('/');if(p.length===3){const d=new Date(p[2],p[0]-1,p[1]);s.age=Math.max(0,Math.round((Date.now()-d)/86400000));}cm();render();}
+document.getElementById('mo').addEventListener('click',function(e){if(e.target===this)cm();});
+document.addEventListener('input',e=>{if(['sf','stf','sof'].includes(e.target.id))render();});
+document.addEventListener('change',e=>{if(['stf','sof'].includes(e.target.id))render();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')cm();});
+render();
+</script>
+</body>
+</html>
